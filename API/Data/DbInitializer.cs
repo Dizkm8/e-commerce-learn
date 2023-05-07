@@ -1,5 +1,6 @@
 using API.Entities;
 
+
 namespace API.Data
 {
     public static class DbInitializer
@@ -7,7 +8,6 @@ namespace API.Data
         public static void Initialize(StoreContext context)
         {
             if (context.Products.Any()) return;
-
             var products = new List<Product>
             {
                 new Product
