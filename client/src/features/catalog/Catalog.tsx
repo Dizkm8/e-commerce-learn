@@ -1,28 +1,22 @@
 import { Product } from "../../app/models/product";
-import { Button } from "@mui/material";
 import ProductList from "./ProductList";
 import { useEffect, useState } from "react";
+import agent from "../../app/api/agent";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 export default function Catalog() {
     const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/products')
-            .then(response => response.json())
-            .then(data => setProducts(data))
+        agent.Catalog.list()
+        .then(products => setProducts(products))
+        .catch(error => console.log(error))
+        .finally(() => setLoading(false));
     }, []);
 
-    function addProduct() {
-        setProducts(prevState => [...prevState,
-        {
-            id: prevState.length + 101,
-            name: 'whono ' + (prevState.length + 1),
-            price: (prevState.length + 1) * 2 + 150,
-            brand: 'some brand',
-            description: 'description',
-            pictureUrl: 'http://picsum.photos/200',
-        }])
-    }
+    if (loading) return <LoadingComponent message='Loading products...'/>
+
     return (
         <>
             <ProductList products={products} ></ProductList>
