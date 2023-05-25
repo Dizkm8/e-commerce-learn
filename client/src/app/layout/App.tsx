@@ -11,7 +11,7 @@ import agent from "../api/agent";
 
 function App() {
   const { setBasket } = useStoreContext();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const buyerId = getCookie('buyerId');
     if (buyerId) {
@@ -20,7 +20,10 @@ function App() {
         .catch(error => console.log(error))
         .finally(() => setLoading(false));
     }
-  });
+    else{
+      setLoading(false);
+    }
+  }, [setBasket]);
 
   const [darkMode, setDarkMode] = useState(false);
   const paletteType = darkMode ? 'dark' : 'light';
